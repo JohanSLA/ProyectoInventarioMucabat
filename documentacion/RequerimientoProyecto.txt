@@ -1,0 +1,15 @@
+Proyecto inventario cafetería Mucabat: El café Mucabat necesita una aplicación web que permita administrar el inventario de un café localizado en Barcelona Quindío, en el café hay un gran numero de productos, cada producto tiene un código único, un nombre, fecha de creación del producto,  responsable de registro del producto ( será quien haya creado el producto en la aplicación), valor del producto, la cantidad existente de dicho producto, por ultimo el producto debe tener unas observaciones. dichas observaciones se especificaran a continuación:
+
+la observación tendrá; fecha de creación, responsable, nombre del producto, código del producto, valor a cancelar.
+
+
+Para ingresar a la aplicación se deberán hacer un login el cual permita ingresar o registrarse ; para dicha acción se debe tener en cuenta los siguientes roles:
+
+-Administradora: Es la persona que tiene acceso a todo el contenido de la aplicación, dicha persona podrá administrar los productos de una forma libre y será una de los roles de los cuales pueden crear productos. esta persona también podrá eliminar y crear observaciones a su antojo y poniendo el responsable que desee siempre y cuando este registrado en la base de datos.
+
+-socia: tendrá acceso a toda la información (podrá ver los empleados, los productos y la información de dichos objetos, pero no podrá modificarla o eliminarla a menos que la observación la cree la misma persona), pero no podrá administrarla, solo podrá verla y únicamente podrá crear las observaciones de un producto.
+
+-empleado: tiene los mismos permisos que el rol de socia, con la diferencia que no podra ver los empleados existentes
+
+
+La aplicacion web debe permitir crear, eliminar o modificar para quienes tengan el permiso, tambien debe permitir generar reportes a la administradora y las socias indicando la informacion completa de los productos y los empleados actuales 
