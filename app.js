@@ -20,14 +20,34 @@ dotenv.config({path:'./env/.env'});
 
 //Seteamos el directorio public
 app.use('/resources',express.static('public'));
-app.use('/resources',express.static(-dirname))
+app.use('/resources',express.static(__dirname + '/public'));
+
+//Establecemos el motor de plantillas 
+app.set('view engine','ejs');
+
+//Invocamos a bcrypjs para encriptar las contraseñas
+const bcryptjs = require('bcryptjs');
+
+
+//Configuramos las variables de inicio de sección (secret=palabra secreta,resave= si guardamos los inicios)
+const session = require('express-session')
+app.use(session({
+    secret:'secret',
+    resave: true ,
+    saveUninitialized: true
+
+
+}))
+
+//Invocamos al modulo de la conexion de base de datos
+const connection = require('./database/db_Login/db')
 
 
 /**
  * prueba de solicitud get 
  */
 app.get('/',(req,res)=>{
-    res.send('HOLA')
+    res.send('HOLA MUNDO')
 })
 
 //Inicio del servidor que estara a la escucha por el puerto 8080
