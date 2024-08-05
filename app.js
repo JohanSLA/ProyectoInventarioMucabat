@@ -47,8 +47,14 @@ const connection = require('./database/db_Login/db')
  * prueba de solicitud get 
  */
 app.get('/',(req,res)=>{
-    res.send('HOLA MUNDO')
+    res.render('index')
 })
+
+
+/**
+ * Establecimiento de rutas
+ */
+
 
 //Inicio del servidor que estara a la escucha por el puerto 8080
 app.listen(8080,(req, resp)=>{
