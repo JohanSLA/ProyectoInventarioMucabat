@@ -47,9 +47,16 @@ const connection = require('./database/db_Login/db')
  * prueba de solicitud get 
  */
 app.get('/',(req,res)=>{
-    res.render('index')
+    res.render('index',{msg: 'paquito'});
 })
 
+
+/**
+ * Atiende las solicitudes para el login 
+ */
+app.get('/login',(req,res)=>{
+    res.render('login');
+})
 
 /**
  * Establecimiento de rutas
