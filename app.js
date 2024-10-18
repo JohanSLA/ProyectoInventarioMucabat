@@ -63,7 +63,8 @@ app.get('/login',(req,res)=>{
  */
 
 
+port = process.env.SERVER_PORT;
 //Inicio del servidor que estara a la escucha por el puerto 8080
-app.listen(8080,(req, resp)=>{
-    console.log("Server listening in https://localhost:8080");
+app.listen(port,(req, resp)=>{
+    console.log("Server listening in https://localhost:"+port);
 })
