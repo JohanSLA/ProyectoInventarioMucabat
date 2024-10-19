@@ -1,3 +1,54 @@
 body{
-    background-color: rgb(245, 232, 121);
+    background-color: #f5f5f5;
+    font-family: roboto;
+    margin: auto;
+    text-align: center;
+}
+
+/* Login form */
+.login-form, .contenedor {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.login-form h1 {
+    text-align: center;
+    color:midnightblue ;
+    font-size: 28px;
+    padding: 70px 0 10px 0;
+  }
+
+  /*Aplica estilo a todo de tipo password y text que este dentro de la clase login-form*/
+.login-form input[type="password"],
+.login-form input[type="text"] {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ced4da;
+  margin-bottom: 10px;
+  box-sizing:border-box;
+}
+
+/* Aplica estos estilos al boton login, este boton es una clase*/
+.btn-login{
+    width: 100%;
+    padding: 15px;
+    background-color: #6f42c1;
+    border: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: large;
+    color: #ffffff;
+}
+
+/*Aplica un efecto de resaltado cuando el cursor esta encima del boton*/
+.btn-login:hover,.btn-login:active{
+    color:#fff;
+    background-color:#61428f;
+    border-color:#61428f
+}
+
+/*Aplica una sombra cuando el boton esta enfocado*/
+.btn-login:focus{
+    box-shadow:0 0 0 3px rgba(121,82,179,0.25)
 }
