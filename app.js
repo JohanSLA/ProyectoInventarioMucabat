@@ -65,6 +65,13 @@ app.get('/login',(req,res)=>{
 })
 
 /**
+ * Atiende las solicitudes para el registro
+ */
+app.get('/register',(req,res)=>{
+    res.render('register');
+})
+
+/**
  * Establecimiento de rutas
  */
 
