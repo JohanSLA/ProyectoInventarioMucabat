@@ -47,6 +47,23 @@ app.use(session({
 const connection = require('./database/db_Login/db')
 const connection = require('./database/db_Login/db')
 
+function calcularDescuentoProductoA(precio) {
+    if (precio > 100) {
+        return precio * 0.9;  // 10% de descuento
+    } else {
+        return precio;  // sin descuento
+    }
+}
+
+function calcularDescuentoProductoB(precio) {
+    if (precio > 100) {
+        return precio * 0.9;  // 10% de descuento
+    } else {
+        return precio;  // sin descuento
+    }
+}
+
+
 //9- Establecimiento de rutas para nuestar app
 /**
  * prueba de solicitud get 
