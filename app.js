@@ -45,8 +45,7 @@ app.use(session({
 
 //8- Invocamos al modulo de la conexion de base de datos para que posterior se conecte a ella
 const connection = require('./database/db_Login/db')
-
-
+const connection = require('./database/db_Login/db')
 
 //9- Establecimiento de rutas para nuestar app
 /**
@@ -68,9 +67,6 @@ app.get('/login',(req,res)=>{
  * Atiende las solicitudes para el registro
  */
 app.get('/register',(req,res)=>{
-    res.render('register');
-    res.render('register');
-    res.render('register');
     res.render('register');
 })
 
