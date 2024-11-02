@@ -39,8 +39,6 @@ app.use(session({
     secret:'secret',
     resave: true ,
     saveUninitialized: true
-
-
 }))
 
 //8- Invocamos al modulo de la conexion de base de datos para que posterior se conecte a ella
