@@ -42,30 +42,53 @@ app.use(session({
 }))
 
 //8- Invocamos al modulo de la conexion de base de datos para que posterior se conecte a ella
-const connection = require('./database/db_Login/db')
+const connection = require('./database/db_Login/db');
+const { error } = require('console');
 
 
-//9- Establecimiento de rutas para nuestar app
-/**
- * prueba de solicitud get 
- */
-app.get('/',(req,res)=>{
-    res.render('index',{msg: 'paquito'});
-})
+//-----------------------  9- Establecimiento de rutas para nuestar app ---------------------------------------
+    /**
+     * prueba de solicitud get 
+     */
+    app.get('/',(req,res)=>{
+        res.render('index',{msg: 'paquito'});
+    })
 
 
-/**
- * Atiende las solicitudes para el login 
- */
-app.get('/login',(req,res)=>{
-    res.render('login');
-})
+    /**
+     * Atiende las solicitudes para el login 
+     */
+    app.get('/login',(req,res)=>{
+        res.render('login');
+    })
 
-/**
- * Atiende las solicitudes para el registro
- */
-app.get('/register',(req,res)=>{
-    res.render('register');
+    /**
+     * Atiende las solicitudes para el registro
+     */
+    app.get('/register',(req,res)=>{
+        res.render('register');
+    })
+
+
+// --------------------------------------------- 10. Registración ---------------------------
+
+app.post('/register', async (req,res) =>{
+
+    console.log("entro a register")
+    const user=req.body.user;
+    const name=req.body.name;
+    const password=req.body.password; //Verificar que arroja 
+    let passwordHaash = await bcryptjs.hash(password, 8);
+
+
+    connection.query('INSERT INTO Login_Usuarios SET ?', {correo:user,contrasena:passwordHaash,nombre:name}, async(error,results)=>{
+        if (error) {
+            console.log(error);
+         }else{
+            res.send('Alta exitosa');
+         }
+    })
+    
 })
 
 
