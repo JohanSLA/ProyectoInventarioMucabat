@@ -74,18 +74,22 @@ const { error } = require('console');
 
 app.post('/register', async (req,res) =>{
 
-    console.log("entro a register")
+    console.log("Server: Se realizo una solicitud post")
     const user=req.body.user;
     const name=req.body.name;
-    const password=req.body.password; //Verificar que arroja 
+    const password=req.body.pass; //Verificar que arroja 
     let passwordHaash = await bcryptjs.hash(password, 8);
 
 
     connection.query('INSERT INTO Login_Usuarios SET ?', {correo:user,contrasena:passwordHaash,nombre:name}, async(error,results)=>{
         if (error) {
+            console.log("Server: ocurrio un problema en la insercion del usuario");
+            console.log("Server: El error es " + error); //Muestar el error
             console.log(error);
          }else{
+            console.log("Server: Se registro con exito el usuario con email:"+user);
             res.send('Alta exitosa');
+            
          }
     })
     
