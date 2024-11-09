@@ -48,10 +48,32 @@ const { error } = require('console');
 
 //-----------------------  9- Establecimiento de rutas para nuestar app ---------------------------------------
     /**
-     * prueba de solicitud get 
+     * Pagina principal de la cafeteria
      */
     app.get('/',(req,res)=>{
-        res.render('index',{msg: 'paquito'});
+        if (req.session.loggedin) {
+            console.log('Server: Loggedin true'); //Prueba
+            console.log('Server: El ussuario conectado es:'+req.session.name);
+            res.render('index',{
+                login: true,
+                nombre: req.session.name
+            });
+        }else{
+            res.render('index',{
+                login: false,
+                nombre: 'Debe iniciar sección'
+            })
+        }
+    })
+
+
+    /**
+     * Manejo de ruta para cerrar seccion, esta destruye la seccion y redirecciona a la pagina principal (index.ejs)
+     */
+    app.get('/logout',(req,res)=>{
+        req.session.destroy(()=>{
+            res.redirect('/')
+        });  
     })
 
 
@@ -77,22 +99,90 @@ app.post('/register', async (req,res) =>{
     console.log("Server: Se realizo una solicitud post")
     const user=req.body.user;
     const name=req.body.name;
-    const password=req.body.pass; //Verificar que arroja 
-    let passwordHaash = await bcryptjs.hash(password, 8);
+    const password=req.body.pass; 
+    let passwordHaash = await bcryptjs.hash(password, 8);//Encripta la contraseña para guardarla en la base de datos encriptada
 
 
     connection.query('INSERT INTO Login_Usuarios SET ?', {correo:user,contrasena:passwordHaash,nombre:name}, async(error,results)=>{
         if (error) {
-            console.log("Server: ocurrio un problema en la insercion del usuario");
+            console.log("Server: Ocurrio un problema en la insercion del usuario");
             console.log("Server: El error es " + error); //Muestar el error
             console.log(error);
+
+             //Enviamos los datos para que nos confirme por medio de ventana si se registro con exito
+             res.render('register',{
+                alert: true,
+                alertTitle: "Oops ...!",
+                alertMessage: "¡Error en el registro!",
+                alertIcon: 'error',
+                showConfirmButton: true, //Oculta el boton de confirmación
+                timer: undefined, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                ruta:'/' //Ruta donde nos llevara despues de esto(Principal)
+            })
          }else{
-            console.log("Server: Se registro con exito el usuario con email:"+user);
-            res.send('Alta exitosa');
+            console.log("Server: Se registro con exito el usuario con email: "+user);
+
+            //Enviamos los datos para que nos confirme por emdio de ventana si se registro con exito
+            res.render('register',{
+                alert: true,
+                alertTitle: "Genial!",
+                alertMessage: "¡Registro proesado exitosamente!",
+                alertIcon: 'success',
+                showConfirmButton: true, //Oculta el boton de confirmación
+                timer: undefined, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                ruta: '/' //Ruta donde nos llevara despues de esto(Principal)
+            })
             
          }
     })
     
+})
+
+
+//------------------------------------------------------------- Login del usuario ----------------------------------
+app.post('/auth', async(req,res)=>{
+    const user= req.body.user; //Captura el user dle formulario login (email)
+    const pass= req.body.pass; //captura la pass ingresada del login ( esta encriptada)
+
+    let passwordHaash= await bcryptjs.hash(pass,8); //Contraseña encriptada
+
+
+
+    //Verifica si el user y pass estan llenos (contienen valores)
+    if(user && pass){
+        connection.query('SELECT * FROM Login_Usuarios WHERE correo = ?',[user],async (error,results)=>{ //Busca en la base de datos si existe un usuario con ese username
+            if (results == 0 || !(await bcryptjs.compare(pass, results[0].contrasena))) { //Si no encontro reultados o la contraseña del user no es la correcta
+               console.log('SERVER: Logue erroneo, usuario y/o contraseña incorrecta')
+                res.render('login',{
+                    alert: true,
+                    alertTitle: "Opsss...!",
+                    alertMessage: "¡Usuario y/o contraseña erroneos!",
+                    alertIcon: 'error',
+                    showConfirmButton: true, //Oculta el boton de confirmación
+                    timer: undefined, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta:'login' //Ruta donde nos llevara despues de esto(Principal)
+                })
+            }else{
+                req.session.loggedin= true; //Esto sirve para verificar que si hay una secion activa y para destruirla facilmenteen caso de cerrarse
+                req.session.name = results[0].nombre; //Toma el nombre del usuario que inicio seccion
+                res.render('login',{
+                    alert: true,
+                    alertTitle: "Genial!!",
+                    alertMessage: "¡Inicio de seccion exitoso!",
+                    alertIcon: 'success',
+                    showConfirmButton: false, //Oculta el boton de confirmación
+                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta:'/' //Ruta donde nos llevara despues de esto()
+                })
+            }
+
+        })
+    }else{
+        //En caso de que los campos esten vacios (user y password del html login)
+        //En este caso como en el html pusimos que estos campos son requerid (requeridos), no necesitamos
+        //Pero en el caso de no ponerlos requeridos pasamos a generar la alerta
+        res.send('Porfavor ingrese un usuario y una password!');
+    }
 })
 
 

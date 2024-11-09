@@ -16,6 +16,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "mysql2": "^3.11.0",
-    "proyectoinventariomucabat": "file:"
+    "proyectoinventariomucabat": "file:",
+    "sweetalert2": "^11.14.4"
   }
 }

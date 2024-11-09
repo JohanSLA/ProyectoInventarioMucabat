@@ -7,9 +7,19 @@
     <link rel="stylesheet" href="resources/css/style.css">
 </head>
 
-    <h1>Bienvenido a la app de inventariado de mucabat</h1>
-    <h2>El usuario conectado es: <%= msg %> </h2>
+    
 <body>
+    <h1>Pagina de inicio de inventario de Mucabat</h1>
+    <% if (login) { %>
+        <h1>El usuario conectado es: <strong><%= nombre %></strong></h1>
+        <a href="logout" class="a-logout">Cerrar Sección</a>
+
+    <% } else { %>
+
+        <h1><strong><%= nombre %></strong></h1>
+        <a href="login" class="a-logout">Iniciar Sección</a>
+
+    <% } %>
     
 </body>
 </html>
