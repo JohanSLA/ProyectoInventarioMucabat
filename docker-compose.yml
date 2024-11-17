@@ -28,10 +28,11 @@ services:
 
     #variables de entorno
     environment:
-      - host=216.24.60.0/24
+      - host=postgresql://root:EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ@dpg-cst3oqhu0jms73egr8sg-a/db_qlpk
       - user=root
-      - password=root
-      - database=login
+      - password=EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ
+      - database=db_qlpk
+
     
     #Establece dependencia (este servicio depende del servicio db y de que db arroje un estado healthy)
 

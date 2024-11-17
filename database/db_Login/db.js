@@ -10,10 +10,10 @@ const mysql = require('mysql2');
 
 //Establecemos las variables para la conexion
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    host: process.env.DB_HOST || 'postgresql://root:EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ@dpg-cst3oqhu0jms73egr8sg-a/db_qlpk' ,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ' ,
+    database: process.env.DB_DATABASE || 'db_qlpk'
 });
 
 //Ejecutamos la conexión, en caso de ocurrir un error; imprimimos un error por consola
