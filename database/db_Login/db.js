@@ -16,6 +16,7 @@ const pool = new Pool({
     }
 });
 
+//------------------- para mysql2 -----------------------------------------------------------------------------------------
 //Establecemos las variables para la conexion
 //const connection = mysql.createConnection({
     //host: process.env.DB_HOST || 'postgresql://root:EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ@dpg-cst3oqhu0jms73egr8sg-a/db_qlpk' ,
@@ -23,6 +24,8 @@ const pool = new Pool({
     //password: process.env.DB_PASSWORD || 'EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ' ,
    // database: process.env.DB_DATABASE || 'db_qlpk'
 //});
+
+//------------------------------------------------------------------------------------------------------------------------
 
 
 // Probar la conexión
@@ -39,6 +42,7 @@ pool.connect((error, client, release) => {
     release();
 });
 
+//----------------------------- para mysql2 ---------------------------------------------------------------
 //Ejecutamos la conexión, en caso de ocurrir un error; imprimimos un error por consola
 //connection.connect((error)=>{
 
@@ -51,7 +55,7 @@ pool.connect((error, client, release) => {
     //console.log('Base de datos conectada con exito');
 
 //});
-
+//-----------------------------------------------------------------------------------------------------------------------
 
 //Exportamos el modulo para poder usarlo en otro lado con el nombre de connection
 module.exports = pool;
