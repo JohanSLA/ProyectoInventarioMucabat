@@ -28,7 +28,7 @@ services:
 
     #variables de entorno
     environment:
-      - host=localhost
+      - host=https://proyectoinventariomucabat.onrender.com
       - user=root
       - password=root
       - database=login
