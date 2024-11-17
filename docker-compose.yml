@@ -28,7 +28,7 @@ services:
 
     #variables de entorno
     environment:
-      - host=0.0.0.0/0
+      - host=216.24.60.0/24
       - user=root
       - password=root
       - database=login
