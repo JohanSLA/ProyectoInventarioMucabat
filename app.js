@@ -1,5 +1,7 @@
 /**
  * Autor: Johan Stiven Londoño Alvarez
+ * julian
+ * didier
  * Inicio de la app
  */
 
@@ -43,7 +45,7 @@ app.use(session({
 
 //8- Invocamos al modulo de la conexion de base de datos para que posterior se conecte a ella
 const connection = require('./database/db_Login/db');
-const { error } = require('console');
+const { error, Console } = require('console');
 
 
 //-----------------------  9- Establecimiento de rutas para nuestar app ---------------------------------------
@@ -54,12 +56,12 @@ const { error } = require('console');
         if (req.session.loggedin) {
             console.log('Server: Loggedin true'); //Prueba
             console.log('Server: El ussuario conectado es:'+req.session.name);
-            res.render('index',{
+            res.render('index2',{
                 login: true,
                 nombre: req.session.name
             });
         }else{
-            res.render('index',{
+            res.render('index2',{
                 login: false,
                 nombre: 'Debe iniciar sección'
             })
@@ -184,6 +186,116 @@ app.post('/auth', async(req,res)=>{
         res.send('Porfavor ingrese un usuario y una password!');
     }
 })
+
+
+app.get('/entregaTurno',async(req,res)=>{
+    if (req.session.loggedin) {
+        console.log('Server: El usuario '+req.session.name +' entro al proceso de entrega de turno'); //Prueba
+        res.render('entregaTurno.ejs',{
+            login: true,
+            nombre: req.session.name
+        });
+    }else{
+        res.render('index2',{
+            login: false,
+            nombre: 'Debe iniciar sección'
+        })
+    }
+})
+
+
+
+app.post('/register-entrega', async (req, res) => {
+    const { datos } = req.body; // Datos enviados desde el cliente
+
+    if (!Array.isArray(datos) || datos.length === 0) {
+        console.log('entro aqui')
+        return res.status(400).json({ success: false, message: 'Datos insuficientes o no válidos' });
+    }
+
+    console.log('Datos de la entrega recibidos:', { datos });
+
+    try {
+        // Inserción en EntregaInventario y obtención del ID generado
+        const id_entrega = await new Promise((resolve, reject) => {
+            connection.query(
+                'INSERT INTO EntregaInventario (usuario_recibe, usuario_entrega) VALUES (?, ?)',
+                ['johan', 'paco'],
+                (error, results) => {
+                    if (error) {
+                        console.error('Error al insertar en EntregaInventario:', error);
+                        return reject(error);
+                    }
+                    console.log('Entrega registrada con ID:', results.insertId);
+                    resolve(results.insertId); // ID generado
+                }
+            );
+        });
+
+        // Iterar sobre los productos y asociarlos con el ID de entrega
+        for (const dato of datos) {
+            const { producto, cantidad, observacion } = dato;
+
+            console.log(`Procesando producto: ${producto}, cantidad: ${cantidad}, observación: ${observacion}`);
+
+            // Obtiene el ID del producto
+            const id_producto = await obtenerIdProducto(producto);
+            if (!id_producto) {
+                console.error(`Producto no encontrado: ${producto}`);
+                continue; // Saltar este producto si no se encuentra
+            }
+
+            // Inserción en EntregaProducto
+            await new Promise((resolve, reject) => {
+                connection.query(
+                    'INSERT INTO EntregaProducto (id_entrega, id_producto, cantidad, observacion) VALUES (?, ?, ?, ?)',
+                    [id_entrega, id_producto, cantidad, observacion],
+                    (error, results) => {
+                        if (error) {
+                            console.error('Error al insertar en EntregaProducto:', error);
+                            return reject(error);
+                        }
+                        console.log('Producto registrado en la entrega:', results);
+                        resolve(results);
+                    }
+                );
+            });
+        }
+
+        // Respuesta exitosa
+        res.json({ success: true, message: 'Entrega y productos registrados exitosamente' });
+        
+    } catch (error) {
+        console.error('Error durante el procesamiento de la entrega:', error);
+        res.status(500).json({ success: false, message: 'Error procesando la entrega' });
+    }
+});
+
+// Función para obtener el ID del producto desde la base de datos
+async function obtenerIdProducto(nombreProducto) {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            'SELECT id_producto FROM Producto WHERE nombre = ?',
+            [nombreProducto],
+            (error, results) => {
+                if (error) {
+                    console.error("Error al buscar el producto:", error);
+                    return reject(error);
+                }
+                if (results.length > 0) {
+                    resolve(results[0].id_producto); // Retorna el ID del producto
+                } else {
+                    resolve(null); // Retorna null si no se encuentra el producto
+                }
+            }
+        );
+    });
+}
+
+
+
+
+
 
 
 /**

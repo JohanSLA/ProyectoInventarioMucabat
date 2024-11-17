@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/style.css">
+    <title>Pagina Principal</title>
+</head>
+
+<body>
+    <div class="raiz-form">
+
+
+        <% if (login) { %>
+            <form action="/options" method="POST">
+                <h1>Información importante</h1>
+                <img src="resources/images/manualv1.png" alt="login icon" class="login-icon">
+                <p>Esta es la informacion donde se indica <br>
+                   finallidad y para que sirve esto <br> <br> <br>
+                </p>
+            </form>
+
+            <div class="botones-raiz">
+                <a href="/entregaTurno" class="btn-proceso">Entrega de turno</a>
+                <a href="/proveedores" class="btn-proceso">Contacto con proveedores</a>
+                <a href="/reservacionEspacio" class="btn-proceso">Reservacion de espacio</a>
+            </div>
+            
+    
+        <% } else { %>
+    
+            <h1><strong><%= nombre %></strong></h1>
+            <a href="login" class="a-logout">Iniciar Sección</a>
+    
+        <% } %>
+
+    </div>
+
+    <div class="options-form">
+        <% if (login) { %>
+            <h1>¡Bienvenido <strong><%= nombre %>!</strong></h1>
+            <a href="logout" class="a-logout">Cerrar Sección</a>
+    
+        <% } %>
+    </div>
+   
+    
+</body>
+</html>

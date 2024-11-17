@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/style.css">
+    <title>Entrega turno</title>
+</head>
+
+<body>
+    <div class="contenedor-entrega">
+        <div class="ventana-formulario">
+            <h1>Formulario entrega de inventario</h1>
+
+            <form action="/register-entrega" method="POST">
+
+                <label for="nombreProducto">Producto</label>
+
+                <select name="producto" id="producto" class="select-css-entrega">
+                    <option value="Vaso cristal" selected>Vaso cristal</option>
+                    <option value="Vaso porcelana" selected>Vaso porcelana</option>
+                </select>  
+    
+                <label for="cantidadProducto">Cantidad</label>
+                <input type="number" name="cantidad"  id="cantidad">
+    
+                <label for="responsable">Responsable</label>
+                <input type="text" value=<%= nombre %>! readonly>
+
+                <label for="Observación">Observación</label>
+                <input type="text" name="observaciónProducto" required>
+    
+    
+                <div class="botonesEntregaInventario">
+                    <input type="button" class="btn-save" value="Agregar" onclick="agregarFila()">
+                    <button type="button" class="btn-cancel" onclick="limpiarInputs()">Limpiar</button> 
+                </div>
+            </form>
+    
+        </div>
+
+        <div class="ventana-vista">
+            <h1>Vista de entregas realizadas</h1>
+            <table class="tabla" id="tabla-body">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Observación</th>
+                    <th>Acción</th> <!-- Columna de acción -->
+                  </tr>
+                </thead>
+                <tbody id="tabla-body">
+                 
+                </tbody>
+              </table>
+              <button onclick="enviarDatosTabla()" class="btn-save">Enviar Datos</button>
+              <a href="/" class="btn-cancel">Cancelar</a>
+        </div>
+
+
+
+    </div>
+
+    <div class="options-form">
+        <% if (login) { %>
+            <h1>¡Bienvenido <strong><%= nombre %>!</strong></h1>
+            <a href="logout" class="a-logout">Cerrar Sección</a>
+        <% } %>
+    </div>
+    
+</body>
+
+<script>
+    function enviarDatosTabla() {
+        const tabla = document.getElementById('tabla-body'); // Selecciona el cuerpo de la tabla
+        const filas = tabla.querySelectorAll('tr'); // Obtiene todas las filas
+
+        const datos = []; // Array para almacenar los datos de la tabla
+        filas.forEach(fila => {
+            const celdas = fila.querySelectorAll('td'); // Obtiene todas las celdas de la fila
+            if (celdas.length > 0) { // Solo procesa filas con datos
+                datos.push({
+                    producto: celdas[0].innerText, // Primera celda: Producto
+                    cantidad: celdas[1].innerText, // Segunda celda: Cantidad
+                    observacion: celdas[2].innerText // Tercera celda: Observación
+                });
+            }
+        });
+
+        // Enviar los datos al servidor con fetch
+        fetch('/register-entrega', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ datos })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Datos enviados con éxito.');
+            } else {
+                alert('Error al enviar los datos.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+        });
+    }
+</script>
+
+
+<script>
+    // Función para limpiar los campos del formulario
+    function limpiarInputs() {
+        const form = document.querySelector('form'); // Selecciona el formulario
+        form.reset(); // Reinicia todos los campos del formulario
+    }
+</script>
+
+<script>
+    function agregarFila() {
+        // Capturar valores de los inputs
+        const producto = document.querySelector('#producto').value;
+        const cantidad = document.querySelector('#cantidad').value;
+        const observacion = document.querySelector('input[name="observaciónProducto"]').value;
+
+        // Validar que los campos no estén vacíos
+        if (!producto || !cantidad || !observacion) {
+            alert('Por favor, complete todos los campos.');
+            return;
+        }
+
+        // Seleccionar el cuerpo de la tabla
+        const tablaBody = document.querySelector('#tabla-body');
+
+        // Crear una nueva fila
+        const nuevaFila = document.createElement('tr');
+
+        // Crear las celdas para la fila
+        nuevaFila.innerHTML = `
+            <td>${producto}</td>
+            <td>${cantidad}</td>
+            <td>${observacion}</td>
+            <td><button onclick="eliminarFila(this)">Eliminar</button></td>
+        `;
+
+        // Agregar la nueva fila al cuerpo de la tabla
+        tablaBody.appendChild(nuevaFila);
+
+        // Limpiar los campos del formulario
+        limpiarInputs();
+    }
+
+    function eliminarFila(boton) {
+        // Eliminar la fila correspondiente
+        const fila = boton.closest('tr');
+        fila.remove();
+    }
+</script>
+
+
+</html>
