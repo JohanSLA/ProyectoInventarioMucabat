@@ -54,4 +54,4 @@ pool.connect((error, client, release) => {
 
 
 //Exportamos el modulo para poder usarlo en otro lado con el nombre de connection
-module.exports = connection;
+module.exports = pool;
