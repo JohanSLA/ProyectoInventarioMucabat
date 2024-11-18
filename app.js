@@ -149,7 +149,8 @@ app.post('/auth', async(req,res)=>{
 
     let passwordHaash= await bcryptjs.hash(pass,8); //Contraseña encriptada
 
-
+    console.log(user)
+    console.log(pass)
 
     //Verifica si el user y pass estan llenos (contienen valores)
     if (user && pass) {
