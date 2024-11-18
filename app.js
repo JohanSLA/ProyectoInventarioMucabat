@@ -152,39 +152,49 @@ app.post('/auth', async(req,res)=>{
 
 
     //Verifica si el user y pass estan llenos (contienen valores)
-    if(user && pass){
-        connection.query('SELECT * FROM Login_Usuarios WHERE correo = ?',[user],async (error,results)=>{ //Busca en la base de datos si existe un usuario con ese username
-            if (results == 0 || !(await bcryptjs.compare(pass, results[0].contrasena))) { //Si no encontro reultados o la contraseña del user no es la correcta
-               console.log('SERVER: Logue erroneo, usuario y/o contraseña incorrecta')
-                res.render('login',{
+    if (user && pass) {
+        pool.query('SELECT * FROM Login_Usuarios WHERE correo = $1', [user], async (error, results) => { 
+            // Busca en la base de datos si existe un usuario con ese username
+            if (error) {
+                console.error('Error al consultar la base de datos:', error);
+                res.render('login', {
+                    alert: true,
+                    alertTitle: "Error",
+                    alertMessage: "Hubo un problema con el servidor. Intenta nuevamente.",
+                    alertIcon: 'error',
+                    showConfirmButton: true,
+                    timer: undefined,
+                    ruta: 'login'
+                });
+            } else if (results.rows.length === 0 || !(await bcryptjs.compare(pass, results.rows[0].contrasena))) { 
+                // Si no encontró resultados o la contraseña del user no es la correcta
+                console.log('SERVER: Logueo erróneo, usuario y/o contraseña incorrecta');
+                res.render('login', {
                     alert: true,
                     alertTitle: "Opsss...!",
-                    alertMessage: "¡Usuario y/o contraseña erroneos!",
+                    alertMessage: "¡Usuario y/o contraseña erróneos!",
                     alertIcon: 'error',
-                    showConfirmButton: true, //Oculta el boton de confirmación
-                    timer: undefined, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
-                    ruta:'login' //Ruta donde nos llevara despues de esto(Principal)
-                })
-            }else{
-                req.session.loggedin= true; //Esto sirve para verificar que si hay una secion activa y para destruirla facilmenteen caso de cerrarse
-                req.session.name = results[0].nombre; //Toma el nombre del usuario que inicio seccion
-                res.render('login',{
+                    showConfirmButton: true,
+                    timer: undefined,
+                    ruta: 'login'
+                });
+            } else {
+                req.session.loggedin = true; // Esto sirve para verificar que si hay una sesión activa y para destruirla fácilmente en caso de cerrarse
+                req.session.name = results.rows[0].nombre; // Toma el nombre del usuario que inició sesión
+                res.render('login', {
                     alert: true,
                     alertTitle: "Genial!!",
-                    alertMessage: "¡Inicio de seccion exitoso!",
+                    alertMessage: "¡Inicio de sesión exitoso!",
                     alertIcon: 'success',
-                    showConfirmButton: false, //Oculta el boton de confirmación
-                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
-                    ruta:'/' //Ruta donde nos llevara despues de esto()
-                })
+                    showConfirmButton: false,
+                    timer: 2000,
+                    ruta: '/' // Ruta donde nos llevará después de esto
+                });
             }
-
-        })
-    }else{
-        //En caso de que los campos esten vacios (user y password del html login)
-        //En este caso como en el html pusimos que estos campos son requerid (requeridos), no necesitamos
-        //Pero en el caso de no ponerlos requeridos pasamos a generar la alerta
-        res.send('Porfavor ingrese un usuario y una password!');
+        });
+    } else {
+        // En caso de que los campos estén vacíos (user y password del HTML login)
+        res.send('¡Por favor ingrese un usuario y una contraseña!');
     }
 })
 
