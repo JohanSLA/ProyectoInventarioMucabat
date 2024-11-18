@@ -226,7 +226,7 @@ app.post('/register-entrega', async (req, res) => {
                         console.error('Error al insertar en EntregaInventario:', error);
                         return reject(error);
                     }
-                    console.log('Entrega registrada con ID:', results.rows[0].id);
+                    console.log('Entrega registrada con ID:', results.rows[0].id_entrega);
                     resolve(results.rows[0].id); // ID generado
                 }
             );      
