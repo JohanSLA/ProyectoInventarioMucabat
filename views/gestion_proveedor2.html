@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proveedores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('page1.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: #fff;
+            /* Color blanco para mejor visibilidad del texto */
+        }
+
+        h1,
+        h2 {
+            color: #fff;
+            /* Color de los títulos */
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.6);
+            /* Fondo semitransparente */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input,
+        select {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Fondo semitransparente */
+            color: #333;
+            /* Color del texto */
+        }
+
+        input::placeholder {
+            color: rgba(51, 51, 51, 0.7);
+            /* Placeholder con algo de transparencia */
+        }
+
+        .error-message {
+            color: red;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            /* Fondo semitransparente */
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            color: #333;
+            /* Color del texto en la tabla */
+        }
+
+        th {
+            background-color: rgba(242, 242, 242, 0.8);
+            /* Fondo de encabezado semitransparente */
+        }
+
+        .action-btn {
+            margin-right: 10px;
+            padding: 6px 12px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #0275d8;
+        }
+
+        .delete-btn {
+            background-color: #d9534f;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Gestión de Proveedores</h1>
+    <!-- Formulario para agregar proveedor -->
+    <form id="addProveedorForm" novalidate>
+        <h2>Agregar Proveedor</h2>
+        <label for="nombre">Nombre del proveedor:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre del proveedor" required>
+        <div class="error-message" id="error-nombre">Por favor, ingrese el nombre del proveedor.</div>
+
+        <label for="contacto">Persona de contacto:</label>
+        <input type="text" id="contacto" name="contacto" placeholder="Persona de contacto" required>
+        <div class="error-message" id="error-contacto">Por favor, ingrese el nombre de la persona de contacto.</div>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono" required>
+        <div class="error-message" id="error-telefono">Por favor, ingrese el número de teléfono.</div>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+        <div class="error-message" id="error-email">Por favor, ingrese el correo electrónico.</div>
+
+        <label for="categoria">Categoría del proveedor:</label>
+        <select id="categoria" name="categoria" required>
+            <option value="">Seleccione una categoría</option>
+            <option value="café">Café</option>
+            <option value="insumos">Insumos</option>
+            <option value="equipos">Equipos</option>
+            <option value="otros">Otros</option>
+        </select>
+        <div class="error-message" id="error-categoria">Por favor, seleccione una categoría.</div>
+
+        <button type="submit">Agregar Proveedor</button>
+    </form>
+
+    <!-- Tabla para mostrar proveedores -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Persona de Contacto</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="proveedoresTable">
+            <!-- Aquí se agregarán los proveedores -->
+        </tbody>
+    </table>
+</body>
+
+</html>
