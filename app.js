@@ -251,18 +251,19 @@ app.post('/register-entrega', async (req, res) => {
 
             // Inserción en EntregaProducto
             await new Promise((resolve, reject) => {
-                connection.query(
-                    'INSERT INTO EntregaProducto (id_entrega, id_producto, cantidad, observacion) VALUES (?, ?, ?, ?)',
+                pool.query(
+                    'INSERT INTO EntregaProducto (id_entrega, id_producto, cantidad, observacion) VALUES ($1, $2, $3, $4) RETURNING id',
                     [id_entrega, id_producto, cantidad, observacion],
                     (error, results) => {
                         if (error) {
                             console.error('Error al insertar en EntregaProducto:', error);
                             return reject(error);
                         }
-                        console.log('Producto registrado en la entrega:', results);
-                        resolve(results);
+                        console.log('Producto registrado en la entrega con ID:', results.rows[0].id);
+                        resolve(results.rows[0].id);
                     }
                 );
+                
             });
         }
 
@@ -278,21 +279,22 @@ app.post('/register-entrega', async (req, res) => {
 // Función para obtener el ID del producto desde la base de datos
 async function obtenerIdProducto(nombreProducto) {
     return new Promise((resolve, reject) => {
-        connection.query(
-            'SELECT id_producto FROM Producto WHERE nombre = ?',
+        pool.query(
+            'SELECT id_producto FROM Producto WHERE nombre = $1',
             [nombreProducto],
             (error, results) => {
                 if (error) {
                     console.error("Error al buscar el producto:", error);
                     return reject(error);
                 }
-                if (results.length > 0) {
-                    resolve(results[0].id_producto); // Retorna el ID del producto
+                if (results.rows.length > 0) {
+                    resolve(results.rows[0].id_producto); // Retorna el ID del producto
                 } else {
                     resolve(null); // Retorna null si no se encuentra el producto
                 }
             }
         );
+        
     });
 }
 
