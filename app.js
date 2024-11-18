@@ -154,7 +154,7 @@ app.post('/auth', async(req,res)=>{
     //Verifica si el user y pass estan llenos (contienen valores)
     if (user && pass) {
         pool.query('SELECT * FROM Login_Usuarios WHERE correo = $1', [user], async (error, results) => { 
-           if (results== 0 || !(await bcryptjs.compare(pass, results[0].contrasena))) { 
+           if (results.rows.length == 0 || !(await bcryptjs.compare(pass, results.rows[0].contrasena))) { 
                 // Si no encontró resultados o la contraseña del user no es la correcta
                 console.log('SERVER: Logueo erróneo, usuario y/o contraseña incorrecta');
                 res.render('login', {
@@ -179,7 +179,7 @@ app.post('/auth', async(req,res)=>{
                     ruta: '/' // Ruta donde nos llevará después de esto
                 });
             }
-        })
+        })  
     } else {
         // En caso de que los campos estén vacíos (user y password del HTML login)
         res.send('¡Por favor ingrese un usuario y una contraseña!');
