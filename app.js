@@ -252,7 +252,7 @@ app.post('/register-entrega', async (req, res) => {
             // Inserción en EntregaProducto
             await new Promise((resolve, reject) => {
                 pool.query(
-                    'INSERT INTO EntregaProducto (id_entrega, id_producto, cantidad, observacion) VALUES ($1, $2, $3, $4) RETURNING id',
+                    'INSERT INTO EntregaProducto (id_entrega, id_producto, cantidad, observacion) VALUES ($1, $2, $3, $4) RETURNING id_entrega',
                     [id_entrega, id_producto, cantidad, observacion],
                     (error, results) => {
                         if (error) {
