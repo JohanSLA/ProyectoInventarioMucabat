@@ -218,20 +218,24 @@ app.post('/register-entrega', async (req, res) => {
     try {
         // Inserción en EntregaInventario y obtención del ID generado
         const id_entrega = await new Promise((resolve, reject) => {
-            connection.query(
-                'INSERT INTO EntregaInventario (usuario_recibe, usuario_entrega) VALUES (?, ?)',
+            pool.query(
+                'INSERT INTO EntregaInventario (usuario_recibe, usuario_entrega) VALUES ($1, $2) RETURNING id',
                 ['johan', 'paco'],
                 (error, results) => {
                     if (error) {
                         console.error('Error al insertar en EntregaInventario:', error);
                         return reject(error);
                     }
-                    console.log('Entrega registrada con ID:', results.insertId);
-                    resolve(results.insertId); // ID generado
+                    console.log('Entrega registrada con ID:', results.rows[0].id);
+                    resolve(results.rows[0].id); // ID generado
                 }
-            );
+            );      
         });
 
+
+
+
+        
         // Iterar sobre los productos y asociarlos con el ID de entrega
         for (const dato of datos) {
             const { producto, cantidad, observacion } = dato;
