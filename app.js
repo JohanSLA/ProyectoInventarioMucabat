@@ -219,7 +219,7 @@ app.post('/register-entrega', async (req, res) => {
         // Inserción en EntregaInventario y obtención del ID generado
         const id_entrega = await new Promise((resolve, reject) => {
             pool.query(
-                'INSERT INTO EntregaInventario (usuario_recibe, usuario_entrega) VALUES ($1, $2) RETURNING id',
+                'INSERT INTO EntregaInventario (usuario_recibe, usuario_entrega) VALUES ($1, $2) RETURNING id_entrega',
                 ['johan', 'paco'],
                 (error, results) => {
                     if (error) {
@@ -235,7 +235,7 @@ app.post('/register-entrega', async (req, res) => {
 
 
 
-        
+
         // Iterar sobre los productos y asociarlos con el ID de entrega
         for (const dato of datos) {
             const { producto, cantidad, observacion } = dato;
