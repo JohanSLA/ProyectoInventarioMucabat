@@ -227,7 +227,7 @@ app.post('/register-entrega', async (req, res) => {
                         return reject(error);
                     }
                     console.log('Entrega registrada con ID:', results.rows[0].id_entrega);
-                    resolve(results.rows[0].id); // ID generado
+                    resolve(results.rows[0].id_entrega); // ID generado
                 }
             );      
         });
@@ -259,8 +259,8 @@ app.post('/register-entrega', async (req, res) => {
                             console.error('Error al insertar en EntregaProducto:', error);
                             return reject(error);
                         }
-                        console.log('Producto registrado en la entrega con ID:', results.rows[0].id);
-                        resolve(results.rows[0].id);
+                        console.log('Producto registrado en la entrega con ID:', results.rows[0].id_entrega_producto);
+                        resolve(results.rows[0].id_entrega_producto_producto);
                     }
                 );
                 
