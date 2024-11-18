@@ -106,7 +106,7 @@ app.post('/register', async (req,res) =>{
     let passwordHaash = await bcryptjs.hash(password, 8);//Encripta la contraseña para guardarla en la base de datos encriptada
 
 
-    pool.query(' INSERT INTO Login_Usuarios (correo, contrasena, nombre) VALUES ($1, $2, $3)', [user,password,name], async(error,results)=>{
+    pool.query(' INSERT INTO Login_Usuarios (correo, contrasena, nombre) VALUES ($1, $2, $3)', [user,passwordHaash,name], async(error,results)=>{
         if (error) {
             console.log("Server: Ocurrio un problema en la insercion del usuario");
             console.log("Server: El error es " + error); //Muestar el error
