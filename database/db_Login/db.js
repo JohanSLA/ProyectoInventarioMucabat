@@ -5,7 +5,7 @@
 
 
 //Invocamos a mysql el cual nos servira para establecer la conexion con la base de datos
-//para produccion:  process.env.DB_CONNECTION_STRING || 'postgresql://root:EKv8cL8ChenMrY5Xn4l9FvzBzIHA1SGQ@dpg-cst3oqhu0jms73egr8sg-a/db_qlpk',
+
 const mysql = require('mysql2');
 
 const { Pool } = require('pg');
