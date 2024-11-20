@@ -472,14 +472,10 @@ body{
 }
 
 .ventana-formulario input {
-  width: 80%;
   height: 25px;
   border-radius: 50px;
   border: #ede9e9;
   width: 90%;
-  height: 25px;
-  border-radius: 50px;
-  border: #ede9e9;
   margin-bottom: 20px;
   align-items: center;
   
