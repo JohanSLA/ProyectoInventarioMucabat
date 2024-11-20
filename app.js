@@ -164,7 +164,7 @@ app.post('/auth', async(req,res)=>{
                     alertMessage: "¡Usuario y/o contraseña erróneos!",
                     alertIcon: 'error',
                     showConfirmButton: false,
-                    timer: 20000,
+                    timer: 2000,
                     ruta: 'login'
                 });
             } else {
