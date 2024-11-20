@@ -243,12 +243,12 @@ body{
 .register-form label {
   display: block;  /* Hace que cada label ocupe toda una línea */
   margin-bottom: 0px; 
-  text-align: left ;
+  text-align: center ;
 }
 
 .register-form input {
   width: 50%;
-  border-radius: 5px;
+  border-radius: 50px;
 }
 
 .register-form h1 {
@@ -479,6 +479,15 @@ body{
   margin-bottom: 20px;
   align-items: center;
   
+}
+
+.register-form .email {
+  height: 35px;
+  border-radius: 25px;
+  border: #ede9e9;
+  width: 100%;
+  margin-bottom: 20px;
+  align-items: center;
 }
 
 
