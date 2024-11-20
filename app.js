@@ -22,7 +22,7 @@ const { dirname } = require('path');
 dotenv.config({path:'./env/.env'});//Direccion donde se encuentra el archivo .env
 
 //Declaracion del puerto del servidor principal
-port = process.env.SERVER_PORT;
+//port = process.env.SERVER_PORT;
 
 //4- Seteamos el directorio public por si deseamos migrar
 app.use('/resources',express.static('public'));
@@ -544,6 +544,6 @@ app.post('/eliminarReservacion', async (req, res) => {
 
 
 //Inicio del servidor que estara a la escucha por el puerto 8080
-app.listen(port,(req, resp)=>{
-    console.log("Server listening in https://localhost:"+port);
+app.listen(8081,(req, resp)=>{
+    console.log("Server listening in https://localhost:"+8081);
 })
