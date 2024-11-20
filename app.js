@@ -147,7 +147,7 @@ app.post('/auth', async(req,res)=>{
     const user= req.body.user; //Captura el user dle formulario login (email)
     const pass= req.body.pass; //captura la pass ingresada del login ( esta encriptada)
 
-    let passwordHaash= await bcryptjs.hash(pass,8); //Contraseña encriptada
+    
 
     console.log(user)
     console.log(pass)
