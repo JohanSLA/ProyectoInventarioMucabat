@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+
+
+    <title>Gestión de Proveedores</title>
+</head>
+
+<body>
+    <div class="contenedor-entrega2">
+        
+        <div class="ventana-formulario">
+
+            <div class="titleGestion">
+                <h1>Gestion reservas</h1>
+                <img src="resources/images/manualv1.png" alt="login icon" class="login-icon">
+            </div>
+            
+            <form action="/crearReserva" method="POST">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre de quien reserva" required>
+                
+
+                
+                <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad personas" required>
+                
+
+                
+                <input type='number' id="telefono" name="telefono" placeholder="Número de teléfono" required>
+                
+
+                
+                <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+
+
+                <input type="date" id="fecha" name="fecha" required>
+
+
+                <label for="categoria">Categoría de la reservación:</label>
+                <select id="categoria" name="categoria" class="select-css-entrega" required>               
+                    <option value="">Seleccione una categoría</option>
+                    <option value="vip">vip</option>
+                    <option value="patio">patio</option>
+                    <option value="aire_libre">aire_libre</option>
+                    <option value="economica">economica</option>
+                </select>
+            
+
+                <div class="botonesEntregaInventario">
+                    <button type="submit" class="btn-save" value="Login" required>Reservar</button>
+                    <button type="button" class="btn-cancel" onclick="limpiarInputs()">Limpiar</button> 
+                    <a href="/" class="btn-cancel">Cancelar</a> 
+                </div>
+            </form>
+        </div>
+
+
+        <div class="ventana-vista">
+            <h1>Cancelaciones</h1>
+            <form action="/eliminarReservacion" method="POST">
+                <input type="text" id="nombreReservante" name="nombreReservante" placeholder="Nombre de quien realiza la reserva" class="deletRes">
+                <button type="submit" class="btn-cancel" value="Login" required>Cancelar reservación</button>
+            </form>
+        </div> 
+
+        
+
+
+
+    </div>
+    
+
+    <div class="options-form">
+        <% if (login) { %>
+            <h1>¡Bienvenido <strong><%= nombre %>!</strong></h1>
+            <a href="logout" class="a-logout">Cerrar Sección</a>
+        <% } %>
+    </div>
+
+    
+    <script>
+        //Funcion que permite que el usuairo solo ingrese texto
+        function soloNumeros(event) {
+          const charCode = event.which || event.keyCode;
+      
+          // Permitir solo números (códigos de 0 a 9)
+          if (charCode < 48 || charCode > 57) {
+            event.preventDefault();
+            return false;
+          }
+          return true;
+        }
+      </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+                title: '<%= alertTitle %>',
+                text:  '<%= alertMessage %>',
+                icon:  '<%= alertIcon %>',
+                showConfirmButton: false,    
+                timer: '<%= timer %>' ,
+            }).then(()=>{
+                window.location='<%= ruta %>'
+            })
+
+        </script>
+    <% } %>
+
+    <script>
+        // Función para limpiar los campos del formulario
+        function limpiarInputs() {
+            const form = document.querySelector('form'); // Selecciona el formulario
+            form.reset(); // Reinicia todos los campos del formulario
+        }
+    </script>
+    
+</body>
+</html>

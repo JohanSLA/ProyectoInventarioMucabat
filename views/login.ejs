@@ -15,7 +15,7 @@
             <img src="resources/images/loginv1.png" alt="login icon" class="login-icon">
         </div>
         <form action="/auth" method="POST">
-            <input type="text" name="user" id="user" placeholder="user" required>
+            <input type="email" name="user" id="user" placeholder="user" required>
             <input type="password" name="pass" id="pass" placeholder="password" required>
             <input type="submit" class="btn-login" value="Login" required>
         </form>
@@ -29,7 +29,7 @@
                 title: '<%= alertTitle %>',
                 text:  '<%= alertMessage %>',
                 icon:  '<%= alertIcon %>',
-                showConfirmButton: '<%= showConfirmButton %>',    
+                showConfirmButton: false,    
                 timer: '<%= timer %>' ,
             }).then(()=>{
                 window.location='<%= ruta %>'

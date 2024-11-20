@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+
+
+    <title>Gestión de Proveedores</title>
+</head>
+
+<body>
+    <div class="contenedor-entrega">
+        <!-- Formulario para agregar proveedor -->
+        <div class="formularioProveedor">
+
+            <div class="titleGestion">
+                <h1>Ingreso proveedor</h1>
+                <img src="resources/images/manualv1.png" alt="login icon" class="login-icon">
+            </div>
+            
+            <form action="/addProveedorForm" method="POST">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre del proveedor" required>
+                
+
+                
+                <input type="text" id="contacto" name="contacto" placeholder="Persona de contacto" required>
+                
+
+                
+                <input type='tel' id="telefono" name="telefono" placeholder="Número de teléfono" required onkeypress="return soloNumeros(event)">
+                
+
+                
+                <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+
+
+                <label for="categoria">Categoría del proveedor:</label>
+                <select id="categoria" name="categoria" class="select-css-entrega" required>               
+                    <option value="">Seleccione una categoría</option>
+                    <option value="café">Café</option>
+                    <option value="insumos">Insumos</option>
+                    <option value="equipos">Equipos</option>
+                    <option value="otros">Otros</option>
+                </select>
+            
+
+                <div class="botonesEntregaInventario">
+                    <input type="submit" class="btn-save" value="Registrar" required>
+                    <button type="button" class="btn-cancel" onclick="limpiarInputs()">Limpiar</button> 
+                    <a href="/" class="btn-cancel">Cancelar</a> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="options-form">
+        <% if (login) { %>
+            <h1>¡Bienvenido <strong><%= nombre %>!</strong></h1>
+            <a href="logout" class="a-logout">Cerrar Sección</a>
+        <% } %>
+    </div>
+
+    
+    <script>
+        //Funcion que permite que el usuairo solo ingrese texto
+        function soloNumeros(event) {
+          const charCode = event.which || event.keyCode;
+      
+          // Permitir solo números (códigos de 0 a 9)
+          if (charCode < 48 || charCode > 57) {
+            event.preventDefault();
+            return false;
+          }
+          return true;
+        }
+      </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire({
+                title: '<%= alertTitle %>',
+                text:  '<%= alertMessage %>',
+                icon:  '<%= alertIcon %>',
+                showConfirmButton: false,    
+                timer: '<%= timer %>' ,
+            }).then(()=>{
+                window.location='<%= ruta %>'
+            })
+
+        </script>
+    <% } %>
+
+    <script>
+        // Función para limpiar los campos del formulario
+        function limpiarInputs() {
+            const form = document.querySelector('form'); // Selecciona el formulario
+            form.reset(); // Reinicia todos los campos del formulario
+        }
+    </script>
+    
+</body>
+</html>

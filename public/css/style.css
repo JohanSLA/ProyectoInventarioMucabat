@@ -41,13 +41,15 @@ body{
 
   /*Aplica estilo a todo de tipo password y text que este dentro de la clase login-form*/
 .login-form input[type="password"],
-.login-form input[type="text"] {
+.login-form input[type="text"],
+.login-form input[type="email"] {
   width: 100%;
   padding: 15px;
   border: 1px solid #ced4da;
   margin-bottom: 10px;
   box-sizing:border-box;
 }
+
 
 /* Aplica estos estilos al boton login, este boton es una clase*/
 .btn-login{
@@ -370,7 +372,7 @@ body{
 
 .contenedor-entrega{
   display: flex; /* Alinea los elementos horizontalmente */
-  height: 80%; /* Ocupa toda la altura de la pantalla */
+  height: 85%; /* Ocupa toda la altura de la pantalla */
   gap: 20px;
   text-align: center;
   padding: 20px;
@@ -388,7 +390,7 @@ body{
   border-radius: 5px;
 }
 
-.contenedor-entrega .ventana-vista {
+.contenedor-entrega .ventana-vista  {
   background-color: rgba(187, 186, 188, 0.944);
   flex: 1; /* Asegura que ambas ventanas tengan el mismo ancho */
   padding: 20px;
@@ -520,6 +522,182 @@ body{
 
 .ventana-formulario .select-css option {
   font-weight:normal;
+}
+
+
+.formularioProveedor{
+  background-color: rgba(187, 186, 188, 0.944);
+  display: flex; /* Alinea los elementos horizontalmente */
+  height: 60%; /* Ocupa toda la altura de la pantalla */
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 50%; /*Espacio con borde superior dehorizontal */
+  left: 50%; /*Espacio con borde izquierdo de forma vertical; */
+  transform: translate(-50%, -50%);
+  
+}
+
+.formularioProveedor input{
+  width: 80%;
+  height: 25px;
+  border-radius: 50px;
+  border: #ede9e9;
+
+  margin-bottom: 20px;
+}
+
+
+.formularioProveedor .btn-save{
+  height: auto;
+  width: 50%;
+  border-radius: 5px;
+}
+
+/*Cambia el estilo de todos los label dentro del register form*/
+.formularioProveedor label {
+  display: block;  /* Hace que cada label ocupe toda una línea */
+  margin-bottom: 0px; 
+  text-align: center ;
+  margin-top: 20px;
+}
+
+
+
+/* Estilos para el select dropdown */
+.formularioProveedor .select-css-entrega {
+  
+  font-size: 16px;  
+  font-weight: 400;  
+  line-height: 1.3;
+  padding: .4em 1.4em .3em .8em;
+  width: 400px;
+  max-width: 50%; 
+  box-sizing: border-box;
+  margin: 0;  
+  background-color: #f5f5f5; 
+  border-radius: 40px; 
+  
+}
+
+.formularioProveedor .select-css::-ms-expand {
+  display: none;
+}
+
+.formularioProveedor .select-css:hover {
+  border-color: #888;
+}
+
+.formularioProveedor .select-css:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222; 
+  outline: none;
+}
+
+.formularioProveedor .select-css option {
+  font-weight:normal;
+}
+
+.ventana-vista .btn-save,
+.formularioProveedor .btn-cancel { /* Ajusta ambos botones */
+  flex: 1; /* Ambos botones tendrán el mismo ancho */
+  border-radius: 5px;
+  margin: 20px;
+  padding: 10px; /* Ajusta según tu diseño */
+  box-sizing: border-box; /* Asegura que padding no afecte el tamaño total */
+}
+
+
+
+.contenedro-delete-reserva{
+  background-color: rgba(187, 186, 188, 0.944);
+  
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
+  top: 50%; /*Espacio con borde superior dehorizontal */
+  left: 50%; /*Espacio con borde izquierdo de forma vertical; */
+  transform: translate(-50%, -50%);
+
+  position: fixed;
+  flex: 1;
+  
+  
+}
+
+.ventana-formulario input{
+  width: 90%;
+  height: 25px;
+  border-radius: 50px;
+  border: #ede9e9;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+
+.ventana-vista input{
+  width: 90%;
+  height: 25px;
+  border-radius: 50px;
+  border: #ede9e9;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+
+
+.contenedor-entrega2{
+  display: flex; /* Alinea los elementos horizontalmente */
+  height: 90%; /* Ocupa toda la altura de la pantalla */
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 60%; /*Espacio con borde superior dehorizontal */
+  left: 50%; /*Espacio con borde izquierdo de forma vertical; */
+  transform: translate(-50%, -50%);
+}
+
+.contenedor-entrega2 .ventana-vista  {
+  background-color: rgba(187, 186, 188, 0.944);
+  flex: content; /* Asegura que ambas ventanas tengan el mismo ancho */
+  padding: 10px;
+  box-sizing: border-box; /* Incluye padding dentro de las dimensiones */
+  overflow-x: auto;
+  max-width: 100%;
+  height: 40%;
+  top: 50%;
+}
+
+.contenedor-entrega2 .ventana-formulario {
+  background-color: rgba(187, 186, 188, 0.944);
+  flex: 1;
+  padding: 20px;
+  color: black;
+  box-sizing: border-box;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  
+}
+
+.botonesEntregaInventario .btn-save,
+.botonesEntregaInventario .btn-cancel { /* Ajusta ambos botones */
+  flex: 1; /* Ambos botones tendrán el mismo ancho */
+  border-radius: 5px;
+  margin: 20px;
+  padding: 10px; /* Ajusta según tu diseño */
+  box-sizing: border-box; /* Asegura que padding no afecte el tamaño total */
 }
 
 

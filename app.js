@@ -163,8 +163,8 @@ app.post('/auth', async(req,res)=>{
                     alertTitle: "Opsss...!",
                     alertMessage: "¡Usuario y/o contraseña erróneos!",
                     alertIcon: 'error',
-                    showConfirmButton: true,
-                    timer: undefined,
+                    showConfirmButton: false,
+                    timer: 20000,
                     ruta: 'login'
                 });
             } else {
@@ -187,7 +187,9 @@ app.post('/auth', async(req,res)=>{
     }
 })
 
-
+/**
+ * Manejod e solicitud que renderiza a la vista principal de gestion de turno
+ */
 app.get('/entregaTurno',async(req,res)=>{
     if (req.session.loggedin) {
         console.log('Server: El usuario '+req.session.name +' entro al proceso de entrega de turno'); //Prueba
@@ -203,6 +205,23 @@ app.get('/entregaTurno',async(req,res)=>{
     }
 })
 
+/**
+ * Manejo de solicitud para la gestion de reservas
+ */
+app.get('/reservacionEspacio',async(req,res)=>{
+    if (req.session.loggedin) {
+        console.log('Server: El usuario '+req.session.name +' entro al proceso de reservacion de espacios'); 
+        res.render('gestionReservas.ejs',{
+            login: true,
+            nombre: req.session.name
+        });
+    }else{
+        res.render('index2',{
+            login: false,
+            nombre: 'Debe iniciar sección'
+        })
+    }
+})
 
 
 app.post('/register-entrega', async (req, res) => {
@@ -213,7 +232,7 @@ app.post('/register-entrega', async (req, res) => {
         return res.status(400).json({ success: false, message: 'Datos insuficientes o no válidos' });
     }
 
-    console.log('Datos de la entrega recibidos:', { datos });
+    console.log('Server: Datos de la entrega recibidos:', { datos });
 
     try {
         // Inserción en EntregaInventario y obtención del ID generado
@@ -299,8 +318,222 @@ async function obtenerIdProducto(nombreProducto) {
 }
 
 
+/**
+ * Principal de gestion de reservas
+ */
+app.get('/gestion_proveedor',async(req,res)=>{
+    if (req.session.loggedin) {
+        console.log('Server: El usuario '+req.session.name +' entro al proceso de gestion de proveedores'); //Prueba
+        res.render('gestion_proveedor.ejs',{
+            login: true,
+            nombre: req.session.name
+        });
+    }else{
+        res.render('index2',{
+            login: false,
+            nombre: 'Debe iniciar sección'
+        })
+    }
+})
 
 
+/**
+ * Metodo que me permite agregar al proveedor 
+ */
+app.post('/addProveedorForm', async(req,res)=>{
+
+    console.log("Server: El usuario "+req.session.name+"Esta intentando agregar un proveedor")
+
+    const nombre= req.body.nombre; //captura el nombre del proveedor
+    const contacto= req.body.contacto; //nombre de la persona de contacto
+    const telefono= req.body.telefono; //Telefono del proveedor
+    const email= req.body.email; //email del proveedor
+    const categoria= req.body.categoria; //categoria del proveedor
+    
+
+    
+
+    //Verifica si el user y pass estan llenos (contienen valores)
+    if (nombre && contacto && telefono && email && categoria) {
+        
+        pool.query(' INSERT INTO proveedor (nombre, contacto, telefono, email, categoria) VALUES ($1, $2, $3, $4, $5)', [nombre,contacto,telefono,email,categoria], async(error,results)=>{
+            if (error) {
+                console.log("Server: Ocurrio un problema en el registro del proveedor");
+                console.log("Server: El error es " + error); //Muestar el error
+                console.log(error);
+    
+                 //Enviamos los datos para que nos confirme por medio de ventana si se registro con exito
+                 res.render('gestion_proveedor',{
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "Oops ...!",
+                    alertMessage: "¡Error en el registro del proveedor!"+"error:"+error,
+                    alertIcon: 'error',
+                    showConfirmButton: false, //Oculta el boton de confirmación
+                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta:'gestion_proveedor' //Ruta donde nos llevara despues de esto(Principal)
+                })
+             }else{
+                console.log("Server: Se registro con exito el proveedor con nombre: "+nombre);
+    
+                //Enviamos los datos para que nos confirme por emdio de ventana si se registro con exito
+                res.render('gestion_proveedor',{
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "Genial!",
+                    alertMessage: "Proveedor registrado exitosamente!",
+                    alertIcon: 'success',
+                    showConfirmButton: false, //Oculta el boton de confirmación
+                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta: 'gestion_proveedor' //Ruta donde nos llevara despues de esto(Principal)
+                })
+                
+             }
+        })
+    }
+})
+
+
+
+/**
+ * Metodo que me permite generar una reserva
+ */
+app.post('/crearReserva', async(req,res)=>{
+
+    console.log("Server: El usuario "+req.session.name+"Esta intentando crear una reserva")
+
+    const nombre= req.body.nombre; //captura el nombre del proveedor
+    const cantidad= req.body.cantidad; //nombre de la persona de contacto
+    const telefono= req.body.telefono; //Telefono del proveedor
+    const email= req.body.email; //email del proveedor
+    const categoria= req.body.categoria; //categoria del proveedor
+    const fecha= req.body.fecha; //Toma la fecha que quiere la reservacion el usuario
+
+
+    //Verifica si el user y pass estan llenos (contienen valores)
+    if (nombre && cantidad && fecha && telefono && email && categoria) {
+        
+        console.log('entro')
+        
+        pool.query(' INSERT INTO reservas (nombre, cantidad, telefono, email, fecha, categoria) VALUES ($1, $2, $3, $4, $5, $6)', [nombre,cantidad,telefono,email,fecha,categoria], async(error,results)=>{
+            if (error) {
+                console.log("Server: Ocurrio un problema en la reservacion del espacio");
+                console.log("Server: El error es " + error); //Muestar el error
+                console.log(error);
+    
+                 //Enviamos los datos para que nos confirme por medio de ventana si se registro con exito
+                 res.render('gestionReservas',{
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "Oops ...!",
+                    alertMessage: "¡Error en la reservación del espacio!"+"error:"+error,
+                    alertIcon: 'error',
+                    showConfirmButton: false, //Oculta el boton de confirmación
+                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta:'/reservacionEspacio' //Ruta donde nos llevara despues de esto(Principal)
+                })
+             }else{
+                console.log("Server: Se reservo con exito el espacio para el usuario: "+nombre);
+    
+                //Enviamos los datos para que nos confirme por emdio de ventana si se registro con exito
+                res.render('gestionReservas',{
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "Genial!",
+                    alertMessage: "Reservación procesada exitosamente!",
+                    alertIcon: 'success',
+                    showConfirmButton: false, //Oculta el boton de confirmación
+                    timer: 2000, //Tiempo de espera para que desaparezca (milisegundos) o undefined para no etablecer tiempo
+                    ruta: '/reservacionEspacio' //Ruta donde nos llevara despues de esto(Principal)
+                })
+                
+             }
+        })
+    }
+})
+
+
+/**
+ * Eliminar reservación
+ */
+app.post('/eliminarReservacion', async (req, res) => {
+    console.log("Server: El usuario " + req.session.name + " está intentando eliminar una reservación");
+
+    const nombre = req.body.nombreReservante; // Captura el nombre del reservante
+
+    // Verificar si el nombre está presente
+    if (nombre) {
+        try {
+            // Realizar la consulta para eliminar el registro
+            const result = await pool.query(
+                'DELETE FROM reservas WHERE nombre = $1',
+                [nombre]
+            );
+
+            if (result.rowCount > 0) {
+                console.log("Server: Se eliminó con éxito la reservación del usuario: " + nombre);
+
+                // Enviar confirmación al usuario
+                res.render('gestionReservas', {
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "¡Reservación Eliminada!",
+                    alertMessage: "La reservación fue eliminada exitosamente.",
+                    alertIcon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    ruta: '/reservacionEspacio'
+                });
+            } else {
+                console.log("Server: No se encontró una reservación con el nombre: " + nombre);
+
+                res.render('gestionReservas', {
+                    login: true,
+                    nombre: req.session.name,
+                    alert: true,
+                    alertTitle: "Error",
+                    alertMessage: "No se encontró una reservación con ese nombre.",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    ruta: '/reservacionEspacio'
+                });
+            }
+        } catch (error) {
+            console.error("Server: Error eliminando la reservación: " + error);
+
+            res.render('gestionReservas', {
+                login: true,
+                nombre: req.session.name,
+                alert: true,
+                alertTitle: "Oops ...!",
+                alertMessage: "Error eliminando la reservación. Por favor, intenta de nuevo.",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 2000,
+                ruta: '/reservacionEspacio'
+            });
+        }
+    } else {
+        console.log("Server: El nombre del reservante no fue proporcionado");
+
+        res.render('gestionReservas', {
+            login: true,
+            nombre: req.session.name,
+            alert: true,
+            alertTitle: "Error",
+            alertMessage: "Por favor, proporciona un nombre para eliminar la reservación.",
+            alertIcon: 'warning',
+            showConfirmButton: true,
+            ruta: '/reservacionEspacio'
+        });
+    }
+});
 
 
 
