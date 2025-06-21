@@ -1,7 +1,5 @@
 /**
  * Autor: Johan Stiven Londoño Alvarez
- * julian
- * didier
  * Inicio de la app
  */
 
